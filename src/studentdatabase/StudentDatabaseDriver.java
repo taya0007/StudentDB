@@ -8,7 +8,7 @@ public class StudentDatabaseDriver {
 
     public static void main(String[] args) throws IOException {
         Scanner scan = new Scanner(System.in);
-        System.out.print("Enter a file name to process: ");
+        System.out.print("Enter a file name to process right now: ");
         String fileName = scan.nextLine().trim();
         Scanner fileReader = new Scanner(new File(fileName));
 
