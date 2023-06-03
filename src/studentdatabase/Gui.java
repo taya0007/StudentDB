@@ -1,14 +1,7 @@
 package studentdatabase;
 
-import studentdatabase.Student;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-
-
 
 
 public class Gui extends JFrame {
@@ -36,6 +29,8 @@ public class Gui extends JFrame {
     private JButton topicResultButton;
     private JButton findTopicResultsButton;
 
+    private JButton awardPrizeButton;
+
     private JTextField topicTitleTextField;
     private JTextField marksField;
     private JTextField topicNumberTextField;
@@ -43,6 +38,8 @@ public class Gui extends JFrame {
     private JTextField numOfTopicsField;
     private JLabel topicNumberLabel;
     private  JLabel TopicDetails;
+    private  JButton addTopicResults;
+    private JButton findTopicResults;
 
 
 
@@ -206,21 +203,25 @@ public class Gui extends JFrame {
         // Add Student button
         addStudentButton = new JButton("Add Student");
         addStudentButton.setBounds(46, 380, 111, 25);
+        addStudentButton.setFont(new Font("", Font.PLAIN, 10));
         mainPanel.add(addStudentButton);
 
         // Find Student button
         findStudentButton = new JButton("Find Student");
         findStudentButton.setBounds(168, 380, 111, 25);
+        findStudentButton.setFont(new Font("", Font.PLAIN, 10));
         mainPanel.add(findStudentButton);
 
         // Print All Records button
         printAllRecordsButton = new JButton("Print All Records");
-        printAllRecordsButton.setBounds(300, 380, 111, 25);
+        printAllRecordsButton.setBounds(290, 380, 118, 25);
+        printAllRecordsButton.setFont(new Font("", Font.PLAIN, 10));
         mainPanel.add(printAllRecordsButton);
 
         // Clear All Records button
         clearAllRecordsButton = new JButton("Clear All Records");
-        clearAllRecordsButton.setBounds(420, 380, 111, 25);
+        clearAllRecordsButton.setBounds(410, 380, 121, 25);
+        clearAllRecordsButton.setFont(new Font("", Font.PLAIN, 10));
         mainPanel.add(clearAllRecordsButton);
 
 
@@ -249,11 +250,23 @@ public class Gui extends JFrame {
         topicTitleTextField.setBounds(89, 58, 130, 21);
         panel3.add(topicTitleTextField);
 
+        addTopicResults = new JButton("Add Results");
+        addTopicResults.setBounds(10, 150, 106, 20);
+        addTopicResults.setFont(new Font("", Font.PLAIN, 12));
+        panel3.add(addTopicResults);
+
+        findTopicResults = new JButton("Find  Results");
+        findTopicResults.setFont(new Font("", Font.PLAIN, 12));
+        findTopicResults.setBounds(120, 150, 112, 20);
+        panel3.add(findTopicResults);
+
+
+
         // Add Grade label
         JLabel gradeLabel = new JLabel("Grade");
-        gradeLabel.setBounds(16, 98, 100, 15);
+        gradeLabel.setBounds(16, 88, 100, 15);
         gradeLabel.setFont(new Font("", Font.PLAIN, 8));
-        panel2.add(gradeLabel);
+        panel3.add(gradeLabel);
 
 // Grade combo box
         String[] gradeOptions = {"HD", "DN", "CR", "P", "F"};
@@ -305,6 +318,11 @@ public class Gui extends JFrame {
         numberOfTopicsTextField.setBounds(77, 95, 146, 21);
         numberOfTopicsTextField.setFont(new Font("", Font.PLAIN, 6));
         panel4.add(numberOfTopicsTextField);
+
+        awardPrizeButton = new JButton("Award Prizes");
+        awardPrizeButton.setBounds(126, 128, 98, 25);
+        awardPrizeButton.setFont(new Font("", Font.PLAIN, 10));
+        panel4.add(awardPrizeButton);
 
         mainPanel.add(panel4);
 
