@@ -2,6 +2,8 @@ package studentdatabase;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
 public class Gui extends JFrame {
@@ -328,89 +330,60 @@ public class Gui extends JFrame {
 
         // Action listeners for buttons
 
-       /* addStudentButton.addActionListener(new ActionListener() {
+        addStudentButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Retrieve student information from text fields
-                String studentNum = studentNumField.getText();
-                String familyName = familyNameField.getText();
-                String givenNames = givenNamesField.getText();
-                String degree = "";
 
-                // Determine the selected degree
-                if (medicineRadioButton.isSelected()) {
-                    degree = "Medicine";
-                } else if (artsRadioButton.isSelected()) {
-                    degree = "Arts";
-                } else if (scienceRadioButton.isSelected()) {
-                    degree = "Science";
                 }
 
-                // Create a new student object
-                Student student = new Student(studentNum, familyName, givenNames, degree);
 
-                // Add the student to the records list
-                studenttudent.add(student);
+               ;
 
-                // Display a success message
-                JOptionPane.showMessageDialog(frame, "Student added successfully!");
-
-                // Clear the text fields
-                studentNumField.setText("");
-                familyNameField.setText("");
-                givenNamesField.setText("");
-                degreeButtonGroup.clearSelection();
-            }
         });
 
        findStudentButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Retrieve student number to search
-                String searchStudentNum = studentNumField.getText();
+                                               @Override
+                                               public void actionPerformed(ActionEvent e) {
 
-                // Search for the student in the records list
-                for (Student student : records) {
-                    if (student.getStudentNumber.equals(searchStudentNum)) {
-                        // Display the found student's information
-                        JOptionPane.showMessageDialog(frame, student.toString());
-                        return; // Exit the loop once the student is found
-                    }
-                }
+                                               }
+                                           });
 
-                // If no student is found, display an error message
-                JOptionPane.showMessageDialog(frame, "Student not found!");
-            }
-        });
 
         printAllRecordsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Check if there are any records
-                if (records.isEmpty()) {
-                    // Display a message if no records are available
-                    JOptionPane.showMessageDialog(frame, "No records found!");
-                } else {
-                    // Print all the records
-                    StringBuilder allRecords = new StringBuilder();
-                    for (Student student : records) {
-                        allRecords.append(student.toString()).append("\n");
-                    }
-                    JOptionPane.showMessageDialog(frame, allRecords.toString());
+
                 }
-            }
+
         });
 
         clearAllRecordsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Clear all the records
-                records.clear();
 
-                // Display a success message
-                JOptionPane.showMessageDialog(frame, "All records cleared!");
             }
-        });*/
+        });
+
+        addTopicResults.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
+        findTopicResults.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
+        awardPrizeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
 
         // Set the frame properties
         setTitle("Student Database Program");
