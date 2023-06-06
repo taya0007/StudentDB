@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class StudentDatabase {
 
-    private final ArrayList<Student> studentDatabse;
+    public final ArrayList<Student> studentDatabse;
     private ArrayList<Prize> prizes;
 
     public StudentDatabase() {
