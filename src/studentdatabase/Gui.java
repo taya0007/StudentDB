@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 
 public class Gui extends JFrame {
@@ -42,7 +43,7 @@ public class Gui extends JFrame {
     private  JLabel TopicDetails;
     private  JButton addTopicResults;
     private JButton findTopicResults;
-
+    private StudentDatabase studentDatabase;
 
 
     private JFrame frame;
@@ -51,6 +52,8 @@ public class Gui extends JFrame {
     public Gui() {
         initComponents();
         frame = new JFrame();
+        studentDatabase = new StudentDatabase();
+
     }
 
     private void initComponents() {
@@ -136,7 +139,7 @@ public class Gui extends JFrame {
 
         // Student Number label and text field
 
-        JLabel TopicDetails = new JLabel("Topic Details");
+        JLabel TopicDetails = new JLabel("Student Details");
         TopicDetails.setBounds(12, 6, 100, 15);
         TopicDetails.setFont(new Font("System Bold Italic", Font.PLAIN, 10));
         panel2.add(TopicDetails);
@@ -328,62 +331,112 @@ public class Gui extends JFrame {
 
         mainPanel.add(panel4);
 
+
         // Action listeners for buttons
 
         addStudentButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                String studentNum = studentNumField.getText();
+                String familyName = familyNameField.getText();
+                String givenNames = givenNamesField.getText();
+                String degree = "";
+                if (medicineRadioButton.isSelected()) {
+                    degree = "Medicine";
+                } else if (artsRadioButton.isSelected()) {
+                    degree = "Arts";
+                } else if (scienceRadioButton.isSelected()) {
+                    degree = "Science";
                 }
 
+                String artMajor = artMajorField.getText();
+                String artMinor = artMinorField.getText();
 
-               ;
+                String studentData = degree + "," + studentNum + "," + familyName + "," + givenNames;
+                if (degree.equals("Arts")) {
+                    studentData += "," + artMajor + "," + artMinor;
+                }
 
+                studentDatabase.addStudent(studentData);
+            }
         });
 
-       findStudentButton.addActionListener(new ActionListener() {
-                                               @Override
-                                               public void actionPerformed(ActionEvent e) {
+        findStudentButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String studentNum = studentNumField.getText();
+                Student student = studentDatabase.findStudent(studentNum);
+                if (student != null) {
+                    familyNameField.setText(student.getFamilyName());
+                    givenNamesField.setText(student.getGiverName());
 
-                                               }
-                                           });
 
+
+                } else {
+                    // Student not found, display an error message or take appropriate action
+                    JOptionPane.showMessageDialog(frame, "Student not found!", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
 
         printAllRecordsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                try {
+                    studentDatabase.printRecords();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
                 }
-
+            }
         });
 
         clearAllRecordsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                studentDatabase.clearRecords();
             }
         });
 
         addTopicResults.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                String topicCode = topicNumberTextField.getText();
+                String marks = topicTitleTextField.getText();
+                String grade = (String) gradeComboBox.getSelectedItem();
 
+                String resultData = topicCode + "," + studentNumField.getText() + "," + marks + "," + grade;
+                studentDatabase.addResult(resultData);
             }
         });
 
         findTopicResults.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // Implement the logic to find topic results for a student
+                String studentNum = studentNumField.getText();
+                Student student = studentDatabase.findStudent(studentNum);
+                if (student != null) {
+                    // Found the student, do something
+                   topicNumberTextField.setText(student.getResults().toString());
 
+
+                } else {
+                    // Student not found, display an error message or take appropriate action
+                    JOptionPane.showMessageDialog(frame, "Student not found!", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
+
         });
 
         awardPrizeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // Implement the logic to award prizes
+                studentDatabase.awardPrizes();
 
             }
         });
+
 
         // Set the frame properties
         setTitle("Student Database Program");
@@ -394,6 +447,7 @@ public class Gui extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
     }
+
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
