@@ -4,7 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
+import java.io.*;
+import java.util.Scanner;
 
 
 public class Gui extends JFrame {
@@ -358,25 +359,69 @@ public class Gui extends JFrame {
                 }
 
                 studentDatabase.addStudent(studentData);
+
+                try {
+                    FileWriter writer = new FileWriter("SavedData.txt", true);
+                    writer.write("Student Number  " +studentNum + "\n");
+                    writer.write("Name: " + familyName + "\n" );
+                    writer.write("Given Names " + givenNames + "\n");
+                    writer.write("Degree " +degree + "\n");
+                    writer.write("--------------------\n");
+
+
+                    writer.close();
+                    JOptionPane.showMessageDialog(frame, "Student details saved successfully!");
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(frame, "Error occurred while saving student details.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+
             }
+
+
         });
 
         findStudentButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String studentNum = studentNumField.getText();
-                Student student = studentDatabase.findStudent(studentNum);
-                if (student != null) {
-                    familyNameField.setText(student.getFamilyName());
-                    givenNamesField.setText(student.getGiverName());
+                String studentID = studentNumField.getText();
+
+                // Search for the student in the text file
+                boolean found = false;
+                try (Scanner scanner = new Scanner(new File("SavedData.txt"))) {
+                    while (scanner.hasNextLine()) {
+                        String line = scanner.nextLine();
+                        if (line.contains("Student Number  " +studentID)) {
+                            // Found the student, update the fields
+                            found = true;
+                            String[] data = line.split(",");
+                            String degree = data[0].trim();
+                            String studentNum = data[0].trim();
+                            String familyName = data[1].trim();
+                            String givenNames = data[2].trim();
 
 
 
-                } else {
-                    // Student not found, display an error message or take appropriate action
-                    JOptionPane.showMessageDialog(frame, "Student not found!", "Error", JOptionPane.ERROR_MESSAGE);
+                            // Update the student details fields
+
+                            familyNameField.setText(familyName);
+                            givenNamesField.setText(givenNames);
+
+
+                        }
+                    }
+
+                    // Display a message if the student was not found
+                    if (!found) {
+                        JOptionPane.showMessageDialog(frame, "No student with ID " + studentID + " found.", "Student Not Found", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                } catch (FileNotFoundException ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(frame, "Error occurred while searching for student details.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
+
+
         });
 
         printAllRecordsButton.addActionListener(new ActionListener() {
@@ -431,10 +476,14 @@ public class Gui extends JFrame {
         awardPrizeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Implement the logic to award prizes
-                studentDatabase.awardPrizes();
 
-            }
+
+                    String prizeName = prizeNameTextField.getText();
+                    String prizeTemplate = templateLabel.getText();
+                    int numTopics = Integer.parseInt(numberOfTopicsTextField.getText());
+
+                    studentDatabase.awardPrizes(prizeName,prizeTemplate,numTopics);
+                }
         });
 
 

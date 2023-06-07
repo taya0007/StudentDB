@@ -1,0 +1,10 @@
+Student Number  1231
+Name: Ten
+Given Names Ben
+Degree Medicine
+--------------------
+Student Number  1232
+Name: May
+Given Names Teena
+Degree Medicine
+--------------------

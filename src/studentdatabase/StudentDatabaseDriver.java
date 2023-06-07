@@ -34,7 +34,7 @@ public class StudentDatabaseDriver {
                 }
         }
 
-        studentDB.awardPrizes();
+        //studentDB.awardPrizes();
         studentDB.printRecords();
 
     }
