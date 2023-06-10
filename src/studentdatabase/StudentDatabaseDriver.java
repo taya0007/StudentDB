@@ -18,6 +18,7 @@ public class StudentDatabaseDriver {
         Prize[] prizeList = new Prize[10];
         while (fileReader.hasNextLine()) {
             s = fileReader.nextLine();
+            System.out.println(s);
             if (s.length() > 0)
                 switch (s.charAt(0)) { //
                     case 'A', 'M', 'S' -> {

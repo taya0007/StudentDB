@@ -8,3 +8,8 @@ Name: May
 Given Names Teena
 Degree Medicine
 --------------------
+Student Number  9800123
+Name: Smith
+Given Names John paul
+Degree Science
+--------------------
