@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
+import java.util.Scanner;
 
 
 public class Gui extends JFrame {
@@ -42,7 +44,7 @@ public class Gui extends JFrame {
     private  JLabel TopicDetails;
     private  JButton addTopicResults;
     private JButton findTopicResults;
-
+    private StudentDatabase studentDatabase;
 
 
     private JFrame frame;
@@ -51,6 +53,8 @@ public class Gui extends JFrame {
     public Gui() {
         initComponents();
         frame = new JFrame();
+        studentDatabase = new StudentDatabase();
+
     }
 
     private void initComponents() {
@@ -136,7 +140,7 @@ public class Gui extends JFrame {
 
         // Student Number label and text field
 
-        JLabel TopicDetails = new JLabel("Topic Details");
+        JLabel TopicDetails = new JLabel("Student Details");
         TopicDetails.setBounds(12, 6, 100, 15);
         TopicDetails.setFont(new Font("System Bold Italic", Font.PLAIN, 10));
         panel2.add(TopicDetails);
@@ -328,62 +332,160 @@ public class Gui extends JFrame {
 
         mainPanel.add(panel4);
 
+
         // Action listeners for buttons
 
         addStudentButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                String studentNum = studentNumField.getText();
+                String familyName = familyNameField.getText();
+                String givenNames = givenNamesField.getText();
+                String degree = "";
+                if (medicineRadioButton.isSelected()) {
+                    degree = "Medicine";
+                } else if (artsRadioButton.isSelected()) {
+                    degree = "Arts";
+                } else if (scienceRadioButton.isSelected()) {
+                    degree = "Science";
                 }
 
+                String artMajor = artMajorField.getText();
+                String artMinor = artMinorField.getText();
 
-               ;
+                String studentData = degree + "," + studentNum + "," + familyName + "," + givenNames;
+                if (degree.equals("Arts")) {
+                    studentData += "," + artMajor + "," + artMinor;
+                }
+
+                studentDatabase.addStudent(studentData);
+
+                try {
+                    FileWriter writer = new FileWriter("SavedData.txt", true);
+                    writer.write("Student Number  " +studentNum + "\n");
+                    writer.write("Name: " + familyName + "\n" );
+                    writer.write("Given Names " + givenNames + "\n");
+                    writer.write("Degree " +degree + "\n");
+                    writer.write("--------------------\n");
+
+
+                    writer.close();
+                    JOptionPane.showMessageDialog(frame, "Student details saved successfully!");
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(frame, "Error occurred while saving student details.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+
+            }
+
 
         });
 
-       findStudentButton.addActionListener(new ActionListener() {
-                                               @Override
-                                               public void actionPerformed(ActionEvent e) {
+        findStudentButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String studentID = studentNumField.getText();
 
-                                               }
-                                           });
+                // Search for the student in the text file
+                boolean found = false;
+                try (Scanner scanner = new Scanner(new File("SavedData.txt"))) {
+                    while (scanner.hasNextLine()) {
+                        String line = scanner.nextLine();
+                        if (line.contains("Student Number  " +studentID)) {
+                            // Found the student, update the fields
+                            found = true;
+                            String[] data = line.split(",");
+                            String degree = data[0].trim();
+                            String studentNum = data[0].trim();
+                            String familyName = data[1].trim();
+                            String givenNames = data[2].trim();
 
+
+
+                            // Update the student details fields
+
+                            familyNameField.setText(familyName);
+                            givenNamesField.setText(givenNames);
+
+
+                        }
+                    }
+
+                    // Display a message if the student was not found
+                    if (!found) {
+                        JOptionPane.showMessageDialog(frame, "No student with ID " + studentID + " found.", "Student Not Found", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                } catch (FileNotFoundException ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(frame, "Error occurred while searching for student details.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+
+
+        });
 
         printAllRecordsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                try {
+                    studentDatabase.printRecords();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
                 }
-
+            }
         });
 
         clearAllRecordsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                studentDatabase.clearRecords();
             }
         });
 
         addTopicResults.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                String topicCode = topicNumberTextField.getText();
+                String marks = topicTitleTextField.getText();
+                String grade = (String) gradeComboBox.getSelectedItem();
 
+                String resultData = topicCode + "," + studentNumField.getText() + "," + marks + "," + grade;
+                studentDatabase.addResult(resultData);
             }
         });
 
         findTopicResults.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // Implement the logic to find topic results for a student
+                String studentNum = studentNumField.getText();
+                Student student = studentDatabase.findStudent(studentNum);
+                if (student != null) {
+                    // Found the student, do something
+                   topicNumberTextField.setText(student.getResults().toString());
 
+
+                } else {
+                    // Student not found, display an error message or take appropriate action
+                    JOptionPane.showMessageDialog(frame, "Student not found!", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
+
         });
 
         awardPrizeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-            }
+
+                    String prizeName = prizeNameTextField.getText();
+                    String prizeTemplate = templateLabel.getText();
+                    int numTopics = Integer.parseInt(numberOfTopicsTextField.getText());
+
+                    studentDatabase.awardPrizes(prizeName,prizeTemplate,numTopics);
+                }
         });
+
 
         // Set the frame properties
         setTitle("Student Database Program");
@@ -394,6 +496,7 @@ public class Gui extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
     }
+
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {

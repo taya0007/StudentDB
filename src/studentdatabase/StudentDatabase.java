@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class StudentDatabase {
 
-    private final ArrayList<Student> studentDatabse;
+    public final ArrayList<Student> studentDatabse;
     private ArrayList<Prize> prizes;
 
     public StudentDatabase() {
@@ -79,47 +79,44 @@ public class StudentDatabase {
         prizes.add(prize);
     }
 
-    public void awardPrizes() {
-        for (Prize prize : prizes){
+    // Inside the StudentDatabase class
+    public void awardPrizes(String prizeName, String prizeTemplate, int numTopics) {
+        Prize prize = new Prize(prizeName, prizeTemplate, numTopics);
 
-            double highestAverage = 0.0;
-            MedStudent highestAverageStudent = null;
+        double highestAverage = 0.0;
+        MedStudent highestAverageStudent = null;
 
-            for (Student s: studentDatabse){
-                if(s instanceof  MedStudent) {
-                    MedStudent medStudent = (MedStudent) s;
-                    List<Result> results = medStudent.getResults();
+        for (Student student : studentDatabse) {
+            if (student instanceof MedStudent) {
+                MedStudent medStudent = (MedStudent) student;
+                List<Result> results = medStudent.getResults();
 
-                    int total = 0;
-                    int count = 0;
+                int total = 0;
+                int count = 0;
 
-                    for (Result result : results) {
-                        String topicCode = result.getTopicCode().substring(0, prize.getTopic().length());
-                        if (topicCode.equals(prize.getTopic().trim())) {
-                            total += result.getMarks();
-                            count++;
-                        }
+                for (Result result : results) {
+                    String topicCode = result.getTopicCode().substring(0, prize.getTopic().length());
+                    if (topicCode.equals(prize.getTopic().trim())) {
+                        total += result.getMarks();
+                        count++;
                     }
+                }
 
+                double average = 0.0;
+                if (count != 0) {
+                    average = (double) total / count;
+                }
 
-                    double average = 0.0;
-                    if(count != 0){
-                        average = total / count;
-                    }
-
-                    if(average > highestAverage){
-                        highestAverage = average;
-                        highestAverageStudent = medStudent;
-                    }
-
+                if (average > highestAverage) {
+                    highestAverage = average;
+                    highestAverageStudent = medStudent;
                 }
             }
+        }
 
-            if(highestAverageStudent != null){
-                highestAverageStudent.addPrize(prize.getName());
-            }
-
-
+        if (highestAverageStudent != null) {
+            highestAverageStudent.addPrize(prize.getName());
         }
     }
+
 }
