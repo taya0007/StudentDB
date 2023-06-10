@@ -1,4 +1,6 @@
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import studentdatabase.Prize;
 import studentdatabase.Result;
 
@@ -141,6 +143,18 @@ class ResultTest {
     public void testToString3() {
         Result result = new Result("M1", "A",2);
         String expectedString = "M1 A 2";
+        assertEquals(expectedString, result.toString());
+    }
+    @ParameterizedTest
+    @CsvSource({
+            "M1,A,2",
+            "M2,B,3",
+            "M3,C,4",
+            "M4,D,5"
+    })
+    public void testToString4(String TCode, String gra, int Mark) {
+        Result result = new Result(TCode,gra,Mark);
+        String expectedString = TCode + " " + gra + " " + Mark;
         assertEquals(expectedString, result.toString());
     }
 }

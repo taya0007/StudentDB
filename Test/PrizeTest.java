@@ -1,5 +1,7 @@
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import studentdatabase.MedStudent;
 import studentdatabase.Prize;
 
@@ -140,6 +142,19 @@ class PrizeTest {
 
     @Test
     public void testToString3() {
+        Prize prize = new Prize("", "", 0);
+        String expectedString = "Prize{name='', topic='', minTopics=0}";
+        assertEquals(expectedString, prize.toString());
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "Third Prize,History,2",
+            "Fisrt Prize,Medicine,3",
+            "Second Prize,Chemistry,4",
+            "Fourth Prize,Mechenical,5"
+    })
+    public void testToString4() {
         Prize prize = new Prize("", "", 0);
         String expectedString = "Prize{name='', topic='', minTopics=0}";
         assertEquals(expectedString, prize.toString());

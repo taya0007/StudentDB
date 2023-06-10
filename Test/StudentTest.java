@@ -1,4 +1,7 @@
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import studentdatabase.MedStudent;
 import studentdatabase.Result;
 import studentdatabase.Student;
@@ -166,6 +169,13 @@ class StudentTest {
         student.setDegree("IT");
         assertEquals("IT", student.getDegree());
     }
+    @ParameterizedTest
+    @ValueSource(strings = {"IT", "", "MEDICINE"})
+    void setDegree4(String Degree) {
+        Student student = new Student();
+        student.setDegree(Degree);
+        assertEquals(Degree, student.getDegree());
+    }
 
     @Test
     public void addResult1() {
@@ -189,6 +199,26 @@ class StudentTest {
         Student student = new Student(123456, "Smith", "John", "Medicine");
         Result result = new Result();
         student.addResult(result);
+        assertEquals(result, student.getResults().get(0));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "123456,Smith,John,Medicine",
+            "234567,John,Doe,ABC",
+            "345678,Keyur,Kakadiya,DEF",
+            "456789,Jane,desusa,MNP"
+    })
+    public void addResult4(int stNum, String Fname, String Gname, String degree) {
+        Student student = new Student(stNum, Fname, Gname, degree);
+        Result result = new Result();
+        student.addResult(result);
+        assertNotNull(result);
+        assertEquals(stNum, student.getStudentNumber());
+        assertEquals(Fname, student.getFamilyName());
+        assertEquals(Gname, student.getGiverName());
+        assertEquals(degree, student.getDegree());
+        assertFalse(student.getResults().isEmpty());
         assertEquals(result, student.getResults().get(0));
     }
 
@@ -230,6 +260,18 @@ class StudentTest {
 
     @Test
     public void testToString4() {
+        Student student = new Student(123456, "Smith", "John", "Medicine");
+        student.addResult(new Result("", ""));
+        student.addResult(new Result("", ""));
+        String expectedString = "Academic record for John Smith(123456)\n" +
+                "Degree: Medicine\n" +
+                "  \n" +
+                "  \n";
+        assertEquals(expectedString, student.toString());
+    }
+
+    @Test
+    public void testToString5() {
         Student student = new Student(123456, "Smith", "John", "Medicine");
         student.addResult(new Result("", ""));
         student.addResult(new Result("", ""));

@@ -1,7 +1,9 @@
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import studentdatabase.ArtsStudent;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ArtsStudentTest {
 
@@ -148,5 +150,17 @@ class ArtsStudentTest {
         ArtsStudent Stu = new ArtsStudent();
         String ans = Stu.getMajorMinorString();
         assertEquals("Major:  \nMinor:   \n",ans);
+    }
+    @ParameterizedTest
+    @CsvSource({
+            "123456,Smith,John,Medicine,S & C,C & P",
+            "234567,John,Doe,ABC,,",
+            "345678,Keyur,Kakadiya,DEF, , ",
+            "456789,Jane,desusa,MNP,SP,CP"
+    })
+    void getMajorMinorString5(int stNum, String Fname, String Gname, String degree,String min, String maj) {
+        ArtsStudent Stu = new ArtsStudent(stNum, Fname, Gname, degree, min, maj);
+        String ans = Stu.getMajorMinorString();
+        assertEquals("Major: "+ min +"\nMinor: "+ maj +"\n",ans);
     }
 }
