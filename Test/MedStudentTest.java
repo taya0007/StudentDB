@@ -1,4 +1,7 @@
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import studentdatabase.ArtsStudent;
 import studentdatabase.MedStudent;
 
@@ -103,6 +106,14 @@ class MedStudentTest {
         medStudent.addPrize(null);
         medStudent.addPrize(null);
         String expectedPrizesString = "Prize: null\nPrize: null\n";
+        assertEquals(expectedPrizesString, medStudent.getPrizesString());
+    }
+    @ParameterizedTest
+    @ValueSource(strings = {"Prize1", ""," ","Prize2"})
+    void getPrizesString4(String prize) {
+        MedStudent medStudent = new MedStudent(123456, "Smith", "John", "Medicine");
+        medStudent.addPrize(prize);
+        String expectedPrizesString = "Prize: "+ prize + "\n";
         assertEquals(expectedPrizesString, medStudent.getPrizesString());
     }
 }
